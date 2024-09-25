@@ -9,8 +9,6 @@ const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 const githubRef =  process.env.GITHUB_REF.match(/\d/g);
 const pullRequestNumber = githubRef.join("")
 
-console.log(`Owner: ${owner}, Repo: ${repo}, Pull Request: ${pullRequestNumber}`);
-
 // Function to get the changed files in the pull request
 async function getChangedFiles() {
   const { data: files } = await octokit.rest.pulls.listFiles({
@@ -38,7 +36,7 @@ function createPrompt(code) {
 // Function to send code to OpenAI for review
 async function reviewCodeWithOpenAI(code) {
   const prompt = createPrompt(code);
-  const response = await openai.createChatCompletion({
+  const response =  await openai.chat.completions.create({
     model: "gpt-4",
     messages: [{ role: "user", content: prompt }],
     max_tokens: 800,
