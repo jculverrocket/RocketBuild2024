@@ -41,7 +41,7 @@ async function reviewCodeWithOpenAI(code) {
     messages: [{ role: "user", content: prompt }],
     max_tokens: 800,
   });
-  return response.data.choices[0].message.content;
+  return response.choices[0].message.content;
 }
 
 // Post feedback to the pull request as a comment
