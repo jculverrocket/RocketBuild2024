@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [todos, setTodos] = useState([]);   // State to store ToDo list
-  const [newTodo, setNewTodo] = useState("");  // State to store new ToDo input
+  const [todos, setTodos] = useState([]);
+  const [newTodo, setNewTodo] = useState("");
+  const [isEditing, setIsEditing] = useState(null)
+  const [editingText, setEditingText] = useState("");
 
   // Function to handle adding new ToDo
   const addTodo = () => {
@@ -27,6 +29,21 @@ function App() {
     setTodos(updatedTodos);
   };
 
+    // Function to handle enabling edit mode
+    const enableEdit = (index, currentText) => {
+      setIsEditing(index); // Set the editing state to the index of the item being edited
+      setEditingText(currentText); // Set the editing text to the current text of the ToDo
+    };
+  
+    // Function to handle saving edited text
+    const saveEdit = (index) => {
+      const updatedTodos = todos.map((todo, i) =>
+        i === index ? { ...todo, text: editingText } : todo
+      );
+      setTodos(updatedTodos);
+      setIsEditing(null); // Exit edit mode
+    };
+
   return (
     <div className="App">
       <h1>ToDo List</h1>
@@ -44,8 +61,22 @@ function App() {
       <ul className="todo-list">
         {todos.map((todo, index) => (
           <li key={index} className={todo.isCompleted ? "completed" : ""}>
-            <span onClick={() => toggleTodo(index)}>{todo.text}</span>
-            <button onClick={() => deleteTodo(index)}>Delete</button>
+            {isEditing === index ? (
+              <>
+                <input
+                  type="text"
+                  value={editingText}
+                  onChange={(e) => setEditingText(e.target.value)}
+                />
+                <button onClick={() => saveEdit(index)}>Save</button>
+              </>
+            ) : (
+              <>
+                <span onClick={() => toggleTodo(index)}>{todo.text}</span>
+                <button onClick={() => enableEdit(index, todo.text)}>Edit</button>
+                <button onClick={() => deleteTodo(index)}>Delete</button>
+              </>
+            )}
           </li>
         ))}
       </ul>
