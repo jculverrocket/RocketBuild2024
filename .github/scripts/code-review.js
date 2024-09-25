@@ -1,6 +1,7 @@
 // .github/scripts/code-review.js
 const { Octokit } = require("@octokit/rest");
 const { Configuration, OpenAIApi } = require("openai");
+
 const octokit = new Octokit({ auth: process.env.PAT_TOKEN });
 const openai = new OpenAIApi(new Configuration({ apiKey: process.env.OPENAI_API_KEY }));
 
