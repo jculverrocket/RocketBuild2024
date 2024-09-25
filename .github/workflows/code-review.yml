@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Print environment variables
+        run: env
+
       - name: Run code review with OpenAI
         run: node .github/scripts/code-review.js
         env:
