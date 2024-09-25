@@ -8,13 +8,16 @@ const openai = new OpenAIApi({ apiKey: process.env.OPENAI_API_KEY });
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 const pullRequestNumber = process.env.GITHUB_REF.split('/').pop();
 
+console.log(`Owner: ${owner}, Repo: ${repo}, Pull Request: ${pullRequestNumber}`);
+
 // Function to get the changed files in the pull request
 async function getChangedFiles() {
-  const { data: files } = await octokit.pulls.listFiles({
-    owner,
-    repo,
+  const { data: files } = await octokit.rest.pulls.listFiles({
+    owner: owner,
+    repo: repo,
     pull_number: pullRequestNumber,
   });
+  console.log(files, 'files')
   return files.filter(file => file.filename.endsWith('.js') || file.filename.endsWith('.jsx') || file.filename.endsWith('.css'));
 }
 
