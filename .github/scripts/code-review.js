@@ -1,9 +1,9 @@
 // .github/scripts/code-review.js
 const { Octokit } = require("@octokit/rest");
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAIApi = require("openai");
 
 const octokit = new Octokit({ auth: process.env.PAT_TOKEN });
-const openai = new OpenAIApi(new Configuration({ apiKey: process.env.OPENAI_API_KEY }));
+const openai = new OpenAIApi({ apiKey: process.env.OPENAI_API_KEY });
 
 const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 const pullRequestNumber = process.env.GITHUB_REF.split('/').pop();
